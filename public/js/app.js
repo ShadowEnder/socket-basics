@@ -4,8 +4,15 @@ var socket = io();
 
 console.log(name + ' wants to join ' + room);
 
+// Update h1 tag
+jQuery('.room-title').text(room);
+
 socket.on('connect', function () {
 	console.log('Connected to socket.io server!');
+	socket.emit('joinRoom', {
+		name: name,
+		room: room
+	});
 });
 
 socket.on('message', function (message) {
@@ -22,7 +29,7 @@ socket.on('message', function (message) {
 // Handles submitting of new message
 var $form = jQuery('#message-form');
 
-$form.on('submit', function () {
+$form.on('submit', function (event) {
 	event.preventDefault();
 
 	var $message = $form.find('input[name=message]');
